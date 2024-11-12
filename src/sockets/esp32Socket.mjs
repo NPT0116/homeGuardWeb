@@ -44,7 +44,6 @@ const setupWokwiSocket = (server, clientIo) => {
                 console.error('Error processing message:', error.message);
             }
         });
-
         ws.on('close', () => {
             console.log('ESP32 (Wokwi) disconnected');
         });

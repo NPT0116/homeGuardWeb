@@ -1,1 +1,133 @@
-<h1>LCD PAGE</h1>
+<style>
+    /* Center the card container */
+    .lcd-container {
+        display: flex;
+        justify-content: center;
+        align-items: start;
+        padding: 50px 20px; /* Padding around the card */
+        min-height: 100vh; /* Full viewport height for vertical centering */
+        background-color: #e9eef8; /* Light background color */
+    }
+
+    /* Card styling */
+    .card {
+        border-radius: 12px;
+        max-width: 500px;
+        width: 100%;
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+        background-color: #ffffff; /* White card background */
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Card hover effect */
+    .card:hover {
+        transform: scale(1.05); /* Slight enlarge on hover */
+        box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Header styling */
+    .card-header {
+        background-color: #1a73e8; /* Blue header */
+        color: white;
+        padding: 15px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.25rem;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+
+    /* Card body padding */
+    .card-body {
+        padding: 20px;
+    }
+
+    /* Form group styling */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    /* Label styling */
+    .form-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    /* Select box styling */
+    #deviceSelect,
+    #modeSelect {
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        margin-bottom: 10px;
+        color: #333;
+        transition: border-color 0.3s ease;
+    }
+
+    #deviceSelect:focus,
+    #modeSelect:focus {
+        outline: none;
+        border-color: #1a73e8;
+    }
+
+    /* Button styling */
+    #submitBtn {
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+        font-weight: bold;
+        color: white;
+        background-color: #1a73e8; /* Primary blue color */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    #submitBtn:hover {
+        background-color: #0b5ed7; /* Darker blue on hover */
+        transform: translateY(-2px); /* Slight lift effect */
+    }
+</style>
+
+<div class="lcd-container">
+    <div class="card">
+        <div class="card-header">
+            <h5>LCD Control</h5>
+        </div>
+        <div class="card-body">
+            <form id="lcdControlForm">
+                <!-- Device Selection -->
+                <div class="form-group">
+                    <label for="deviceSelect">Select Device</label>
+                    <select id="deviceSelect">
+                        <% devices.forEach(device => { %>
+                        <option value="<%= device.device_id %>"><%= device.name %></option>
+                        <% }) %>
+                    </select>
+                </div>
+
+                <!-- Mode Selection -->
+                <div class="form-group">
+                    <label for="modeSelect">Select Mode</label>
+                    <select id="modeSelect">
+                        <option value="temperature">Temperature</option>
+                        <option value="humidity">Humidity</option>
+                        <option value="time">Time</option>
+                    </select>
+                </div>
+
+                <!-- Submit Button -->
+                <button id="submitBtn" type="button">Send to LCD</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/lcdControl.js"></script>

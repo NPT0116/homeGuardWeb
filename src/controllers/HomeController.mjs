@@ -7,13 +7,11 @@ import { User } from '../models/userSchema.mjs';
 export const renderHomePage = async (req, res, next) => {
     try {
         // Lấy thông tin người dùng
+
         const user = await User.findById(req.user._id);
 
         // Lấy tất cả các thiết bị của người dùng, bao gồm các cảm biến liên quan
-        const devices = await Device.find({ owner: req.user._id })
-            .populate('dht22Sensor')
-            .populate('fireSensor')
-            .populate('motionSensor');
+        const devices = await Device.find({ owner: req.user._id }).populate('dht22Sensor').populate('fireSensor').populate('motionSensor');
         const onlineDevicesCount = devices.length;
 
         // Đặt mốc thời gian một tuần trước để tính trung bình nhiệt độ và độ ẩm
@@ -29,9 +27,7 @@ export const renderHomePage = async (req, res, next) => {
         for (const device of devices) {
             if (device.dht22Sensor) {
                 // Lọc dữ liệu trong lịch sử cảm biến trong khoảng thời gian 1 tuần qua
-                const recentData = device.dht22Sensor.history.filter(
-                    (entry) => new Date(entry.timestamp) >= oneWeekAgo,
-                );
+                const recentData = device.dht22Sensor.history.filter((entry) => new Date(entry.timestamp) >= oneWeekAgo);
 
                 // Tính tổng và đếm số lượng dữ liệu nhiệt độ và độ ẩm
                 recentData.forEach((entry) => {
@@ -142,9 +138,7 @@ export const renderHomePage = async (req, res, next) => {
         ]);
 
         // Gộp và sắp xếp các cảnh báo từ cả hai loại cảm biến
-        const recentAlerts = [...fireAlerts, ...motionAlerts]
-            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-            .slice(0, 5); // Giới hạn lại số cảnh báo muốn hiển thị
+        const recentAlerts = [...fireAlerts, ...motionAlerts].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 5); // Giới hạn lại số cảnh báo muốn hiển thị
 
         // Render trang với dữ liệu từ DB
         return res.render('index', {
