@@ -1,8 +1,8 @@
-import routes from '../config/routes.mjs';
+import PATH from '../config/routes.mjs';
 
 const redirectIfAuthenticated = (req, res, next) => {
     if (req.isAuthenticated()) {
-        return res.redirect(routes.home);
+        return res.redirect(PATH.HOME);
     }
     next();
 };

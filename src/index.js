@@ -20,7 +20,7 @@ import authenticateEnsure from './middlewares/authenConfirm.mjs';
 import morgan from 'morgan';
 import http from 'http';
 import setupWokwiSocket from './sockets/esp32Socket.mjs';
-
+import PATH from './config/routes.mjs';
 const app = express();
 const server = http.createServer(app); // Create the HTTP server
 
@@ -102,10 +102,10 @@ const swaggerSpecs = swaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 // Middleware for ensuring authentication before handling routes
-app.get('*', authenticateEnsure, (req, res, next) => {
-    console.log('Middleware to check login.');
-    next(); // Continue if the user is logged in
-});
+// app.get('*', authenticateEnsure, (req, res, next) => {
+//     console.log('Middleware to check login.');
+//     next(); // Continue if the user is logged in
+// });
 app.use(router);
 
 // Handle 404 errors for all non-existing routes
@@ -116,6 +116,13 @@ app.all('*', (req, res, next) => {
 app.set('clientIo', clientIo);
 
 app.use(globalErrorHandler);
+app.get('/', (req, res) => {
+    if (req.isAuthenticated()) {
+        res.redirect(PATH.HOME); // Chuyển hướng đến trang chính sau khi đăng nhập
+    } else {
+        res.redirect(PATH.LOGIN); // Chuyển hướng đến trang login
+    }
+});
 
 // Use server.listen to run the server, supporting both Express and WebSocket
 server.listen(PORT, () => {
