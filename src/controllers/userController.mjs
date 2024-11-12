@@ -1,5 +1,5 @@
 import { User } from '../models/userSchema.mjs';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 export const createUser = async (username, password, email) => {
     try {
