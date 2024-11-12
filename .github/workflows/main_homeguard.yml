@@ -19,12 +19,20 @@ jobs:
             - name: Set up Node.js version
               uses: actions/setup-node@v3
               with:
-                  node-version: '18.x' # Chuyển sang Node.js 18
+                  node-version: '18.x' # Chuyển sang Node.js 18 để kiểm tra
+
+            - name: Cache node modules
+              uses: actions/cache@v2
+              with:
+                  path: ~/.npm
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node-
 
             - name: npm install, build, and test
               run: |
                   npm install
-                  npm start --if-present
+                  npm run build --if-present
                   npm run test --if-present
 
             - name: Upload artifact for deployment job
