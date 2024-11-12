@@ -12,11 +12,7 @@
                 <div class="sensor-icon"><i class="fas fa-thermometer-half"></i></div>
                 <div class="sensor-value"><strong>Temperature:</strong> <%= device.dht22Sensor.temperature %> °C</div>
                 <div class="sensor-value"><strong>Humidity:</strong> <%= device.dht22Sensor.humidity %> %</div>
-                <div class="last-modified">
-                    Last Modified: <%= device.dht22Sensor.history.length > 0 ? new
-                    Date(device.dht22Sensor.history[device.dht22Sensor.history.length - 1].timestamp).toLocaleString() :
-                    "No Data" %>
-                </div>
+                <div class="last-modified">Last Modified: <%= device.dht22Sensor.history.length > 0 ? new Date(device.dht22Sensor.history[device.dht22Sensor.history.length - 1].timestamp).toLocaleString() : "No Data" %></div>
             </div>
             <% } %>
 
@@ -24,14 +20,10 @@
             <% if (device.fireSensor) { %>
             <div class="sensor-card" onclick="window.location.href='/dashboard/<%= device.fireSensor._id %>'">
                 <div class="sensor-icon"><i class="fas fa-fire"></i></div>
-                <div class="sensor-value">
-                    <strong>Fire Detected:</strong> <%= device.fireSensor.status ? "Yes" : "No" %>
-                </div>
+                <div class="sensor-value"><strong>Fire Detected:</strong> <%= device.fireSensor.status ? "Yes" : "No" %></div>
                 <div class="last-modified">
                     <strong>Last Modified:</strong>
-                    <%= device.fireSensor.history.length > 0 ? new
-                    Date(device.fireSensor.history[device.fireSensor.history.length - 1].timestamp).toLocaleString() :
-                    "No Data" %>
+                    <%= device.fireSensor.history.length > 0 ? new Date(device.fireSensor.history[device.fireSensor.history.length - 1].timestamp).toLocaleString() : "No Data" %>
                 </div>
             </div>
             <% } %>
@@ -40,14 +32,10 @@
             <% if (device.motionSensor) { %>
             <div class="sensor-card" onclick="window.location.href='/dashboard/<%= device.motionSensor._id %>'">
                 <div class="sensor-icon"><i class="fas fa-running"></i></div>
-                <div class="sensor-value">
-                    <strong>Motion Detected:</strong> <%= device.motionSensor.isMotionDetected ? "Yes" : "No" %>
-                </div>
+                <div class="sensor-value"><strong>Motion Detected:</strong> <%= device.motionSensor.isMotionDetected ? "Yes" : "No" %></div>
                 <div class="last-modified">
                     <strong>Last Modified:</strong>
-                    <%= device.motionSensor.history.length > 0 ? new
-                    Date(device.motionSensor.history[device.motionSensor.history.length - 1].timestamp).toLocaleString()
-                    : "No Data" %>
+                    <%= device.motionSensor.history.length > 0 ? new Date(device.motionSensor.history[device.motionSensor.history.length - 1].timestamp).toLocaleString() : "No Data" %>
                 </div>
             </div>
             <% } %>
@@ -59,9 +47,7 @@
                 <div class="sensor-value"><strong>Gas Level:</strong> <%= device.gasSensor.gasLevel %></div>
                 <div class="last-modified">
                     <strong>Last Modified:</strong>
-                    <%= device.gasSensor.history.length > 0 ? new
-                    Date(device.gasSensor.history[device.gasSensor.history.length - 1].timestamp).toLocaleString() : "No
-                    Data" %>
+                    <%= device.gasSensor.history.length > 0 ? new Date(device.gasSensor.history[device.gasSensor.history.length - 1].timestamp).toLocaleString() : "No Data" %>
                 </div>
             </div>
             <% } %>
