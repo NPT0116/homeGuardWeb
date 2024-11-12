@@ -45,7 +45,7 @@ jobs:
         runs-on: ubuntu-latest
         needs: build
         environment:
-            name: 'Production'
+            name: 'Development' # Cập nhật môi trường thành 'Development'
             url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
         permissions:
             id-token: write #This is required for requesting the JWT
@@ -68,5 +68,5 @@ jobs:
               id: deploy-to-webapp
               with:
                   app-name: 'homeGuard'
-                  slot-name: 'Production'
+                  slot-name: 'Development' # Cập nhật slot thành 'Development'
                   package: .
