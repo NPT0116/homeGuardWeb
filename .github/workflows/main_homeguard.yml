@@ -19,7 +19,7 @@ jobs:
             - name: Set up Node.js version
               uses: actions/setup-node@v3
               with:
-                  node-version: '18.x' # Chuyển sang Node.js 18 để kiểm tra
+                  node-version: '20.x' # Chuyển sang Node.js 18 để kiểm tra
 
             - name: Cache node modules
               uses: actions/cache@v2
@@ -45,7 +45,7 @@ jobs:
         runs-on: ubuntu-latest
         needs: build
         environment:
-            name: 'Development' # Cập nhật môi trường thành 'Development'
+            name: 'Production'
             url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
         permissions:
             id-token: write #This is required for requesting the JWT
@@ -68,5 +68,5 @@ jobs:
               id: deploy-to-webapp
               with:
                   app-name: 'homeGuard'
-                  slot-name: 'Development' # Cập nhật slot thành 'Development'
+                  slot-name: 'Production'
                   package: .
