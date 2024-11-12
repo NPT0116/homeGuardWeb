@@ -1,0 +1,100 @@
+[
+    {
+        "id": "ae29fae741111a57",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "b7c71fa931cf24fa",
+        "type": "http in",
+        "z": "ae29fae741111a57",
+        "name": "ledStatus",
+        "url": "/ledStatus",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 380,
+        "y": 280,
+        "wires": [
+            [
+                "ce135cd8390b819c",
+                "c556e70b3f866db8"
+            ]
+        ]
+    },
+    {
+        "id": "1d4d51ac261a7577",
+        "type": "debug",
+        "z": "ae29fae741111a57",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 740,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "ce135cd8390b819c",
+        "type": "function",
+        "z": "ae29fae741111a57",
+        "name": "function 1",
+        "func": "let payload = msg.payload;\n\ntry {\n  // Kiểm tra nếu payload đã là đối tượng JSON\n  if (typeof payload === \"string\") {\n    msg.payload = JSON.parse(payload); // Chỉ parse nếu là chuỗi JSON\n  } else {\n    msg.payload = payload; // Nếu là Object, giữ nguyên\n  }\n} catch (error) {\n  msg.payload = { error: \"Invalid JSON format\" };\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 420,
+        "wires": [
+            [
+                "9e8a48ef77284047"
+            ]
+        ]
+    },
+    {
+        "id": "c556e70b3f866db8",
+        "type": "http response",
+        "z": "ae29fae741111a57",
+        "name": "ledStatusResponse",
+        "statusCode": "200",
+        "headers": {},
+        "x": 630,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "9e8a48ef77284047",
+        "type": "http request",
+        "z": "ae29fae741111a57",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://127.0.0.1:3000/api/led/status",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 630,
+        "y": 560,
+        "wires": [
+            [
+                "1d4d51ac261a7577"
+            ]
+        ]
+    }
+]

@@ -1,0 +1,393 @@
+<div class="welcome-message">
+    <h2><i class="fas fa-home"></i> Welcome, <%= userName %>! You are logged into HomeGuard</h2>
+</div>
+
+<div class="section-header">
+    <h3><i class="fas fa-clipboard-list"></i> Weekly Report</h3>
+</div>
+<div class="status-overview">
+    <div class="card temperature">
+        <div class="icon"><i class="fas fa-thermometer-half"></i></div>
+        <h3>Average Temperature (Past Week)</h3>
+        <p><%= avgTemperature !== "No Data" ? `${avgTemperature} °C` : 'No Data' %></p>
+    </div>
+    <div class="card humidity">
+        <div class="icon"><i class="fas fa-tint"></i></div>
+        <h3>Average Humidity (Past Week)</h3>
+        <p><%= avgHumidity !== "No Data" ? `${avgHumidity} %` : 'No Data' %></p>
+    </div>
+    <div class="card devices">
+        <div class="icon"><i class="fas fa-wifi"></i></div>
+        <h3>Online Devices</h3>
+        <p><%= onlineDevicesCount %> Devices</p>
+    </div>
+</div>
+
+<div class="section-header">
+    <h3><i class="fas fa-info-circle"></i> Advice</h3>
+</div>
+<div class="advice-cards">
+    <% if (avgTemperature < 18) { %>
+    <div class="advice-card">
+        <i class="fas fa-thermometer-empty"></i> Temperature is quite low. Consider keeping warm!
+    </div>
+    <% } %> <% if (avgHumidity < 30) { %>
+    <div class="advice-card">
+        <i class="fas fa-water"></i> Humidity is low. Use a humidifier to improve air quality.
+    </div>
+    <% } %>
+</div>
+
+<div class="section-header">
+    <h3><i class="fas fa-exclamation-triangle"></i> Important Alerts</h3>
+</div>
+<div class="alerts-section">
+    <div class="alerts-cards">
+        <% recentAlerts.forEach((alert) => { %>
+        <div class="alert-card <%= alert.message.includes('Fire') ? 'alert-warning' : 'alert-info' %>">
+            <i class="<%= alert.message.includes('Fire') ? 'fas fa-fire' : 'fas fa-bell' %>"></i>
+            <p><%= new Date(alert.timestamp).toLocaleString() %> - <%= alert.message %></p>
+        </div>
+        <% }) %>
+    </div>
+</div>
+
+<style>
+    .status-overview .card {
+        width: 200px;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .status-overview .card:hover {
+        transform: scale(1.05);
+    }
+
+    .icon {
+        font-size: 2rem;
+        color: #007bff; /* Mặc định cho Temperature */
+        margin-bottom: 10px;
+    }
+
+    .card.temperature .icon {
+        color: #007bff; /* Màu xanh cho card Temperature */
+    }
+
+    .card.humidity .icon {
+        color: #17a2b8; /* Màu xanh biển cho card Humidity */
+    }
+
+    .card.devices .icon {
+        color: #28a745; /* Màu xanh lá cho card Devices */
+    }
+
+    /* Chỉnh lại các phần màu sắc của Advice và Important Alerts để khác với Weekly Report */
+    .advice-cards .advice-card {
+        background-color: #e0f7fa;
+        color: #00796b;
+        padding: 10px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: bold;
+    }
+
+    .alerts-section .alert-card {
+        padding: 10px;
+        background-color: #fff5e6;
+        color: #b35900;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: bold;
+    }
+
+    .advice-section {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .advice-card {
+        padding: 15px;
+        background-color: #f0f4f8;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: background-color 0.3s ease;
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Thêm transition */
+    }
+
+    .advice-card i {
+        font-size: 24px;
+        color: #007bff;
+    }
+    li {
+        list-style: none;
+    }
+    /* Container and layout styling */
+    .homepage-container {
+        max-width: 80%;
+        margin: auto;
+        padding: 20px;
+        color: #333;
+    }
+
+    .welcome-message {
+        font-size: 1.6rem;
+        text-align: center;
+        color: #0056b3;
+        background: linear-gradient(90deg, rgba(0, 120, 255, 1) 0%, rgba(0, 220, 255, 1) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        margin-bottom: 20px;
+    }
+
+    /* Status cards styling */
+    .status-overview {
+        display: flex;
+        justify-content: space-around;
+        margin: 20px 0;
+    }
+
+    .card {
+        width: 220px;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: #f0f4ff;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        position: relative;
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Thêm transition */
+    }
+
+    .card:hover {
+        cursor: pointer;
+        transform: scale(1.05); /* Tăng kích thước nhẹ khi hover */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Thêm bóng đổ khi hover */
+    }
+
+    .card.temperature {
+        border-left: 5px solid #007bff;
+    }
+
+    .card.humidity {
+        border-left: 5px solid #17a2b8;
+    }
+
+    .card.devices {
+        border-left: 5px solid #28a745;
+    }
+
+    .card h3 {
+        color: #333;
+        font-weight: bold;
+    }
+
+    .card p {
+        font-size: 1.2rem;
+        color: #555;
+    }
+
+    /* Icon styling inside cards */
+    .icon {
+        font-size: 2rem;
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+    .card.humidity .icon {
+        color: #17a2b8;
+    }
+    .card.devices .icon {
+        color: #28a745;
+    }
+
+    /* Recent alerts styling */
+    .alerts-section {
+        margin-top: 20px;
+    }
+
+    .alerts-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .alert-card {
+        padding: 10px 15px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: bold;
+        color: #333;
+        background-color: #f9e8d2;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        max-width: fit-content;
+        transition: background-color 0.3s ease;
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Thêm transition */
+    }
+
+    .alert-warning {
+        background-color: #fdf2e3;
+    }
+
+    .alert-info {
+        background-color: #f2f9e3;
+    }
+
+    .alert-card i {
+        font-size: 20px;
+        color: #e67e22;
+    }
+
+    .alert-card p {
+        margin: 0;
+    }
+
+    .alert-card:hover {
+        cursor: pointer;
+        transform: scale(1.05);
+
+        background-color: #fbe2c2; /* màu ngả vàng hơn khi hover */
+    }
+    /* Clock styling */
+    .clock {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #007bff;
+        color: #fff;
+        padding: 15px 25px;
+        border-radius: 10px;
+        font-size: 1.5rem; /* Tăng kích thước chữ */
+        font-weight: bold;
+        font-family: 'Arial', sans-serif;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Đổ bóng mạnh hơn */
+        transition: transform 0.3s ease;
+    }
+
+    .clock:hover {
+        cursor: pointer;
+        transform: scale(1.1); /* Phóng to nhẹ khi hover */
+    }
+
+    .section-header {
+        margin-top: 20px;
+        font-size: 1.2rem;
+        color: #0056b3;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .section-header h3 {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #0056b3;
+    }
+
+    .status-overview,
+    .advice-cards,
+    .alerts-section {
+        margin: 20px 0;
+    }
+
+    .card,
+    .advice-card,
+    .alert-card {
+        margin-top: 10px;
+    }
+
+    .advice-card {
+        width: 40%;
+        background-color: #e0f7fa;
+        padding: 10px;
+        border-radius: 8px;
+        color: #00796b;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .alert-card {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-radius: 8px;
+        max-width: fit-content;
+        gap: 10px;
+        font-weight: bold;
+    }
+
+    .alert-warning {
+        background-color: #fdebd3;
+        color: #d35400;
+    }
+
+    .alert-info {
+        background-color: #eaf2f8;
+        color: #2874a6;
+    }
+    .advice-card:hover {
+        cursor: pointer;
+        background-color: #cbf3f8;
+        transform: scale(1.05);
+    }
+</style>
+<div id="clock" class="clock"></div>
+
+<script>
+    // Real-time clock
+    function updateClock() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const date = now.toLocaleDateString();
+        const time = `${hours}:${minutes}:${seconds}`;
+
+        document.getElementById('clock').innerHTML = `${date} - ${time}`;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+</script>
+<script>
+    // Giả định các giá trị nhiệt độ và độ ẩm
+    const avgTemperature = 26; // Dữ liệu giả lập cho nhiệt độ
+    const avgHumidity = 65; // Dữ liệu giả lập cho độ ẩm
+
+    // Gợi ý dựa trên nhiệt độ
+    const temperatureAdvice = document.getElementById('temperatureAdvice');
+    if (avgTemperature < 18) {
+        temperatureAdvice.innerText = 'Thời tiết lạnh, hãy giữ ấm!';
+    } else if (avgTemperature <= 25) {
+        temperatureAdvice.innerText = 'Thời tiết mát mẻ, tận hưởng không khí trong lành!';
+    } else {
+        temperatureAdvice.innerText = 'Thời tiết nóng, nhớ uống đủ nước!';
+    }
+
+    // Gợi ý dựa trên độ ẩm
+    const humidityAdvice = document.getElementById('humidityAdvice');
+    if (avgHumidity < 40) {
+        humidityAdvice.innerText = 'Độ ẩm thấp, hãy sử dụng máy tạo độ ẩm!';
+    } else if (avgHumidity <= 60) {
+        humidityAdvice.innerText = 'Độ ẩm lý tưởng, cảm thấy thoải mái.';
+    } else {
+        humidityAdvice.innerText = 'Độ ẩm cao, có thể cần giảm ẩm để tránh khó chịu.';
+    }
+</script>

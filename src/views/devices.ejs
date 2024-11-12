@@ -1,0 +1,538 @@
+<div class="device-list">
+    <h2>List of your devices</h2>
+
+    <% if (user.devices.length > 0) { %> <% user.devices.forEach(function(device) { %>
+    <div class="device-item" onclick="window.location.href='/devices/<%= device.device_id %>/select'">
+        <img src="/img/device_icon.png" class="device-icon" alt="Device Icon" />
+        <div class="device-info">
+            <div class="device-header">
+                <h3><%= device.name %></h3>
+                <span class="status online"></span>
+                <!-- Blinking green light -->
+            </div>
+            <p><strong>Device Id:</strong> <%= device.device_id %></p>
+            <p><strong>Device Name:</strong> <%= device.name %></p>
+            <p><strong>Location:</strong> <%= device.location %></p>
+        </div>
+        <!-- Nút xóa thiết bị -->
+        <!-- <button >Delete Device</button> -->
+        <button class="delete-btn btn" data-device-id="<%= device.device_id %>">
+            <div class="svg-wrapper-1">
+                <div class="svg-wrapper">
+                    <svg
+                        fill="currentColor"
+                        width="24"
+                        height="24"
+                        version="1.1"
+                        id="Layer_1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        viewBox="0 0 330 330"
+                        xml:space="preserve"
+                    >
+                        <g id="XMLID_6_">
+                            <g id="XMLID_11_">
+                                <path
+                                    d="M240,121.076H30V275c0,8.284,6.716,15,15,15h60h37.596c19.246,24.348,49.031,40,82.404,40c57.897,0,105-47.103,105-105
+                           C330,172.195,290.816,128.377,240,121.076z M225,300c-41.355,0-75-33.645-75-75s33.645-75,75-75s75,33.645,75,75
+                           S266.355,300,225,300z"
+                                />
+                            </g>
+                            <g id="XMLID_18_">
+                                <path
+                                    d="M240,90h15c8.284,0,15-6.716,15-15s-6.716-15-15-15h-30h-15V15c0-8.284-6.716-15-15-15H75c-8.284,0-15,6.716-15,15v45H45
+                           H15C6.716,60,0,66.716,0,75s6.716,15,15,15h15H240z M90,30h90v30h-15h-60H90V30z"
+                                />
+                            </g>
+                            <g id="XMLID_23_">
+                                <path
+                                    d="M256.819,193.181c-5.857-5.858-15.355-5.858-21.213,0L225,203.787l-10.606-10.606c-5.857-5.858-15.355-5.858-21.213,0
+                           c-5.858,5.858-5.858,15.355,0,21.213L203.787,225l-10.606,10.606c-5.858,5.858-5.858,15.355,0,21.213
+                           c2.929,2.929,6.768,4.394,10.606,4.394c3.839,0,7.678-1.465,10.607-4.394L225,246.213l10.606,10.606
+                           c2.929,2.929,6.768,4.394,10.607,4.394c3.839,0,7.678-1.465,10.606-4.394c5.858-5.858,5.858-15.355,0-21.213L246.213,225
+                           l10.606-10.606C262.678,208.535,262.678,199.039,256.819,193.181z"
+                                />
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+            <span>Delete</span>
+        </button>
+    </div>
+    <% }) %> <% } else { %>
+    <p class="no-device">No current device available</p>
+    <% } %>
+</div>
+
+<!-- Nút thêm thiết bị -->
+<!-- <button id="add-device-btn" class="primary-btn">Adding device</button> -->
+<button id="add-device-btn" class="btn add-btn">
+    <div class="svg-wrapper-1">
+        <div class="svg-wrapper">
+            <svg
+                fill="currentColor"
+                height="24"
+                id="Layer_1"
+                version="1.1"
+                viewBox="0 0 512 512"
+                width="24"
+                xml:space="preserve"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+                <path
+                    d="M256,512C114.625,512,0,397.391,0,256C0,114.609,114.625,0,256,0c141.391,0,256,114.609,256,256  C512,397.391,397.391,512,256,512z M256,64C149.969,64,64,149.969,64,256s85.969,192,192,192c106.047,0,192-85.969,192-192  S362.047,64,256,64z M288,384h-64v-96h-96v-64h96v-96h64v96h96v64h-96V384z"
+                />
+            </svg>
+        </div>
+    </div>
+    <span>Add</span>
+</button>
+<!-- Form thêm thiết bị, ẩn ban đầu -->
+<div id="add-device-form" class="form-hidden">
+    <form>
+        <div class="form-group">
+            <label for="device-id">Device ID:</label>
+            <input type="text" id="device-id" name="deviceId" required />
+        </div>
+
+        <div class="form-group">
+            <label for="name">Device name:</label>
+            <input type="text" id="name" name="name" placeholder="Device name" required />
+        </div>
+
+        <div class="form-group">
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" placeholder="Living room, kitchen, etc." required />
+        </div>
+
+        <button type="submit" class="primary-btn">Register Device</button>
+        <button type="button" id="cancel-add-device-btn" class="secondary-btn">Cancel</button>
+    </form>
+</div>
+
+<!-- Modal xác nhận xóa thiết bị -->
+<div id="confirm-modal" class="modal">
+    <div class="modal-content">
+        <p id="modal-message"></p>
+        <button id="modal-confirm-btn" class="primary-btn">Confirm</button>
+        <button id="modal-cancel-btn" class="secondary-btn">Cancel</button>
+    </div>
+</div>
+
+<!-- Styles -->
+<style>
+    /* css header */
+    .device-list h2 {
+        font-size: 1.8rem;
+        font-weight: bold;
+        text-align: center;
+        color: transparent; /* Makes the text itself transparent */
+        background: linear-gradient(90deg, rgba(0, 120, 255, 1) 0%, rgba(0, 220, 255, 1) 100%);
+        -webkit-background-clip: text; /* Applies gradient to text */
+        background-clip: text;
+        margin-bottom: 20px; /* Keeps space below header */
+        margin-top: 0;
+    }
+
+    /* From Uiverse.io by adamgiebl */
+    .btn {
+        font-family: inherit;
+        font-size: 16px;
+        background: #e74d5c; /* Background for the delete button */
+        color: white;
+        padding: 0.5em 0.8em;
+        padding-left: 0.7em;
+        display: flex;
+        align-items: center;
+        border: none;
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.2s;
+        cursor: pointer;
+        font-weight: 650;
+    }
+
+    .btn span {
+        display: block;
+        margin-left: 0.3em;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn svg {
+        display: block;
+        transform-origin: center center;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .btn:hover .svg-wrapper {
+        animation: fly-1 0.6s ease-in-out infinite alternate;
+    }
+
+    .btn:hover svg {
+        transform: translateX(1.2em) rotate(45deg) scale(1.1);
+    }
+
+    .btn:hover span {
+        transform: translateX(5em);
+    }
+
+    .btn:active {
+        transform: scale(0.95);
+    }
+    .btn:hover {
+        background: #dc3545;
+    }
+    @keyframes fly-1 {
+        from {
+            transform: translateY(0.1em);
+        }
+
+        to {
+            transform: translateY(-0.1em);
+        }
+    }
+    /* add btn */
+    .add-btn {
+        background: #007bff;
+        margin-top: 10px; /* Adds space between the "Add" button and previous "Adding device" button */
+    }
+
+    .add-btn:hover {
+        background: #0e5eb3 !important;
+    }
+
+    .delete-btn {
+        background: #e74d5c;
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+    }
+
+    .delete-btn:hover {
+        background: #dc3545;
+    }
+
+    /* status light */
+
+    .status {
+        position: relative;
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        margin: 10px;
+        animation: pulse 1.5s infinite ease-in;
+    }
+
+    .status.online {
+        background: #39f539;
+    }
+    .status.offline {
+        background: #ff4242;
+    }
+    .status:before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: -5px;
+        top: -5px;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        animation: pulse 1.5s infinite ease-in;
+    }
+
+    @keyframes pulse {
+        from {
+            transform: scale(0.5);
+            opacity: 1;
+        }
+        to {
+            transform: scale(1.5);
+            opacity: 0;
+        }
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+    }
+
+    .device-list {
+        margin: 20px auto;
+        max-width: 800px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .device-item {
+        position: relative; /* Ensure positioning works for the button */
+
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 20px;
+        background-color: #e7f0ff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        position: relative; /* For positioning delete button */
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .device-item:hover {
+        cursor: pointer;
+    }
+    .device-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .device-info {
+        flex: 1;
+    }
+
+    .device-info h3 {
+        font-size: 18px;
+        color: #0056b3;
+        margin-bottom: 10px;
+    }
+
+    .device-info p {
+        margin: 5px 0;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .device-header {
+        display: flex;
+        align-items: center;
+    }
+
+    .device-icon {
+        width: 60px;
+        height: 60px;
+        margin-right: 20px;
+    }
+
+    .status-light {
+        width: 15px;
+        height: 15px;
+        background-color: #27ae60;
+        border-radius: 50%;
+        margin-left: 15px;
+        animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+        0%,
+        100% {
+            background-color: #27ae60;
+        }
+        50% {
+            background-color: #2ecc71;
+        }
+    }
+
+    .no-device {
+        text-align: center;
+        font-size: 18px;
+        color: #666;
+    }
+
+    #add-device-btn {
+        margin-top: 15px;
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    /* #add-device-btn:hover {
+        background-color: #0056b3;
+    } */
+
+    #add-device-form {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 15px;
+        display: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .primary-btn {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .primary-btn:hover {
+        background-color: #0056b3;
+    }
+
+    .secondary-btn {
+        background-color: #6c757d;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .secondary-btn:hover {
+        background-color: #5a6268;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 500px;
+        width: 100%;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-content p {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+
+    .modal-content button {
+        margin-right: 10px;
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+</style>
+
+<!-- Scripts để hiển thị form và xử lý modal xóa thiết bị -->
+<script>
+    // Hiển thị form thêm thiết bị
+    document.getElementById('add-device-btn').addEventListener('click', function () {
+        document.getElementById('add-device-form').style.display = 'block';
+    });
+
+    // Hủy thêm thiết bị
+    document.getElementById('cancel-add-device-btn').addEventListener('click', function () {
+        document.getElementById('add-device-form').style.display = 'none';
+    });
+
+    // Xử lý sự kiện xóa thiết bị với modal xác nhận
+    // Xử lý sự kiện xóa thiết bị với modal xác nhận
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    const confirmModal = document.getElementById('confirm-modal');
+    const confirmMessage = document.getElementById('modal-message');
+    let deviceIdToDelete = null;
+
+    // Hiển thị modal xác nhận khi nhấn nút xóa
+    deleteButtons.forEach((button) => {
+        button.addEventListener('click', function (e) {
+            e.stopPropagation(); // Ngăn sự kiện click lan ra ngoài modal
+            deviceIdToDelete = this.getAttribute('data-device-id');
+            confirmMessage.textContent = 'Bạn có chắc chắn muốn xóa thiết bị này?';
+            confirmModal.style.display = 'flex';
+        });
+    });
+
+    // Đóng modal khi nhấn nút "Cancel"
+    document.getElementById('modal-cancel-btn').addEventListener('click', function (e) {
+        e.stopPropagation(); // Ngăn sự kiện click lan ra ngoài modal
+        confirmModal.style.display = 'none';
+        deviceIdToDelete = null; // Xóa ID thiết bị khi hủy xóa
+    });
+
+    // Xóa thiết bị khi nhấn nút "Confirm"
+    document.getElementById('modal-confirm-btn').addEventListener('click', function (e) {
+        e.stopPropagation(); // Ngăn sự kiện click lan ra ngoài modal
+        if (deviceIdToDelete) {
+            fetch(`/devices/delete/${deviceIdToDelete}`, {
+                method: 'DELETE',
+            }).then((response) => {
+                confirmModal.style.display = 'none';
+                if (response.ok) {
+                    location.reload(); // Tải lại trang sau khi xóa thành công
+                } else {
+                    alert('Xóa thiết bị thất bại!');
+                }
+            });
+        }
+    });
+
+    // Đóng modal khi nhấp bên ngoài nội dung modal
+    window.addEventListener('click', function (event) {
+        if (event.target === confirmModal) {
+            confirmModal.style.display = 'none';
+            deviceIdToDelete = null; // Xóa ID thiết bị khi nhấp bên ngoài
+        }
+    });
+
+    const registerDeviceForm = document.querySelector('#add-device-form');
+    registerDeviceForm.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Ngăn trình duyệt gửi form truyền thống
+
+        const deviceId = registerDeviceForm.querySelector('input[name="deviceId"]').value;
+        const deviceLocation = registerDeviceForm.querySelector('input[name="location"]').value;
+        const deviceName = registerDeviceForm.querySelector('input[name="name"]').value;
+
+        try {
+            const response = await fetch('/devices/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ deviceId, location: deviceLocation, name: deviceName }),
+            });
+            console.log(response);
+
+            if (response.ok) {
+                // Nếu thành công, render lại trang
+                window.location.href = '/devices';
+            } else {
+                alert('Đăng ký thiết bị thất bại!');
+            }
+        } catch (e) {
+            console.error('Lỗi khi đăng ký thiết bị:', e);
+            alert('Đã xảy ra lỗi!');
+        }
+    });
+</script>

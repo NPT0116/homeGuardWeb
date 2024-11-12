@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title><%= title %></title>
+        <link href="/css/register.css" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- Phần chứa lỗi tổng quát -->
+        <form class="form" id="register-form">
+            <p class="title">Register</p>
+            <p class="message">Sign up now and secure your home with confidence!</p>
+
+            <!-- Trường Username -->
+            <label>
+                <input
+                    class="input-field input"
+                    type="text"
+                    name="username"
+                    placeholder=""
+                    required=""
+                    autocomplete="off"
+                />
+                <span>Username</span>
+            </label>
+            <!-- Thông báo lỗi cho username -->
+            <span class="error-message username-error" style="color: red"></span>
+
+            <!-- Trường Email -->
+            <label>
+                <input class="input-field input" type="email" name="email" placeholder="" required="" />
+                <span>Email</span>
+            </label>
+            <!-- Thông báo lỗi cho email -->
+            <span class="error-message email-error" style="color: red"></span>
+
+            <!-- Trường Password -->
+            <label>
+                <input class="input-field input" type="password" name="password" placeholder="" required="" />
+                <span>Password</span>
+            </label>
+            <!-- Thông báo lỗi cho password -->
+            <span class="error-message password-error" style="color: red"></span>
+
+            <!-- Trường Confirm Password -->
+            <label>
+                <input class="input-field input" type="password" name="confirmPassword" placeholder="" required="" />
+                <span>Confirm password</span>
+            </label>
+            <!-- Thông báo lỗi cho confirm password -->
+            <span class="error-message confirmPassword-error" style="color: red"></span>
+
+            <!-- Nút Submit -->
+            <button class="submit">Submit</button>
+
+            <!-- Liên kết tới trang đăng nhập -->
+            <p class="signin">Already have an account? <a href="/login">Signin</a></p>
+        </form>
+
+        <!-- Hidden input để truyền dữ liệu lỗi từ server vào JavaScript -->
+        <input type="hidden" id="errors-data" value="<%- JSON.stringify(errors) %>" />
+
+        <!-- Nhúng file JavaScript xử lý -->
+        <script src="/js/register.js"></script>
+    </body>
+</html>

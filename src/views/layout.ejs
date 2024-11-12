@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title><%= title %></title>
+        <link rel="stylesheet" href="/css/layout.css" />
+        <link rel="stylesheet" href="/css/header.css" />
+        <link rel="stylesheet" href="/css/sidebar.css" />
+        <link rel="stylesheet" href="/css/modal.css" />
+        <!-- Các liên kết CSS khác -->
+        <link rel="stylesheet" href="/css/profile.css" />
+
+        <link rel="stylesheet" href="/fontawesome/css/all.min.css" />
+    </head>
+    <body>
+        <%- include('shared/header.ejs'); %>
+
+        <div class="container">
+            <div><%- include('shared/sidebar.ejs') ;%></div>
+            <div class="main-content"><%- body %></div>
+            <div id="confirm-modal" class="modal">
+                <div class="modal-content">
+                    <p id="modal-message"></p>
+                    <button id="modal-confirm-btn">Confirm</button>
+                    <button id="modal-cancel-btn">Cancel</button>
+                </div>
+            </div>
+            <script src="/js/modal.js"></script>
+        </div>
+    </body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        // Lắng nghe sự kiện từ các loại cảnh báo khác nhau
+        socket.on('fireAlert', (data) => {
+            showAlertModal('fire', data);
+        });
+        socket.on('gasAlert', (data) => {
+            showAlertModal('gas', data);
+        });
+        socket.on('motionAlert', (data) => {
+            showAlertModal('motion', data);
+        });
+
+        function showAlertModal(alertType, data) {
+            const modal = document.createElement('div');
+            modal.id = 'alertModal';
+            modal.classList.add('alert-modal', alertType);
+            const alertContent = getAlertContent(alertType, data);
+            modal.innerHTML = `
+                <div class="alert-modal-content">
+                    <span class="close-button" onclick="closeModal()">×</span>
+                    ${alertContent}
+                </div>
+            `;
+            document.body.appendChild(modal);
+            document.getElementById('alertModal').style.display = 'flex';
+        }
+
+        function getAlertContent(alertType, data) {
+            if (alertType === 'fire') {
+                return `
+                    <h2 class="alert-title">🚨 Cảnh báo cháy nổ 🚨</h2>
+                    <p class="alert-location">Vị trí: <strong>${data.location}</strong></p>
+                    <p class="alert-details">Nhiệt độ: <strong>${data.temperature}°C</strong>, Khói: <strong>${data.smokeLevel} %</strong></p>
+                `;
+            } else if (alertType === 'gas') {
+                return `
+                    <h2 class="alert-title">⚠️ Cảnh báo khí gas ⚠️</h2>
+                    <p class="alert-location">Vị trí: <strong>${data.location}</strong></p>
+                    <p class="alert-details">Mức độ khí gas: <strong>${data.gasLevel} %</strong></p>
+                `;
+            } else if (alertType === 'motion') {
+                return `
+                    <h2 class="alert-title">👀 Cảnh báo chuyển động 👀</h2>
+                    <p class="alert-location">Vị trí: <strong>${data.location}</strong></p>
+                    <p class="alert-details">Đã phát hiện chuyển động.</p>
+                `;
+            }
+            return '';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('alertModal');
+            if (modal) {
+                modal.style.display = 'none';
+                modal.remove();
+            }
+        }
+    </script>
+
+    <style>
+        /* CSS cho alert-modal */
+        /* General modal styling */
+        .alert-modal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* Dark semi-transparent background */
+            z-index: 1000;
+        }
+
+        /* Modal content styling */
+
+        /* Close button styling */
+        .close-button {
+            color: white;
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* Title and text adjustments */
+        .alert-title {
+            font-size: 22px;
+            color: #ff0000;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .alert-location {
+            font-size: 18px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .alert-details {
+            font-size: 16px;
+            color: #7e7c7c;
+        }
+
+        /* Pulsing effect for a sense of urgency */
+        @keyframes alert-pulse {
+            0%,
+            100% {
+                box-shadow: 0 0 5px rgba(255, 0, 0, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(255, 0, 0, 1);
+            }
+        }
+
+        /* Màu sắc đặc trưng cho từng loại cảnh báo */
+        .alert-modal.fire .alert-modal-content {
+            border: 3px solid #ff0000;
+            background-color: rgba(255, 0, 0, 0.1);
+        }
+        .alert-modal.gas .alert-modal-content {
+            border: 3px solid #ffa500;
+            background-color: rgba(255, 165, 0, 0.1);
+        }
+        .alert-modal.motion .alert-modal-content {
+            border: 3px solid #4caf50;
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+
+        /* Màu sắc cho tiêu đề cảnh báo */
+        .alert-modal.fire .alert-title {
+            color: #ff0000;
+        }
+        .alert-modal.gas .alert-title {
+            color: #ffa500;
+        }
+        .alert-modal.motion .alert-title {
+            color: #4caf50;
+        }
+        /* Highlighted text for location and sensor values */
+        .alert-location {
+            font-size: 20px;
+            font-weight: bold;
+            color: #d9534f; /* Use a prominent color, like red */
+            margin-top: 10px;
+        }
+
+        .alert-details {
+            font-size: 18px;
+            color: #ffffff; /* Darker color for readability */
+            font-weight: bold;
+            line-height: 1.5; /* Increase line height for readability */
+        }
+
+        /* Adjusting alert title */
+        .alert-title {
+            font-size: 24px;
+            color: #ff0000;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        /* Adding icon styling for emphasis */
+        .alert-title i,
+        .alert-location i {
+            color: #ff0000; /* Icon color for emphasis */
+            margin-right: 5px;
+            font-size: 1.5rem; /* Increase icon size */
+        }
+
+        /* Adding padding to modal content */
+        .alert-modal-content {
+            position: relative;
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            border: 3px solid #ff0000;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            width: 400px;
+            max-width: 90%;
+            animation: alert-pulse 1s infinite;
+        }
+    </style>
+</html>

@@ -1,0 +1,81 @@
+<div class="dashboard-container">
+    <h2 class="page-title"><%= sensorType %> Sensor Dashboard</h2>
+
+    <!-- Bảng hiển thị lịch sử cho cảm biến Gas -->
+    <h3><%= sensorType %> Detection History</h3>
+    <table id="sensorHistoryTable" class="display">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <% if (sensorType === 'Fire' || sensorType === 'Motion') { %>
+                <th>Status</th>
+                <% } else if (sensorType === 'DHT22') { %>
+                <th>Temperature (°C)</th>
+                <th>Humidity (%)</th>
+                <% } else if (sensorType === 'Gas') { %>
+                <th>Gas Level</th>
+                <% } %>
+                <th>Device Name</th>
+                <th>Location</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% sensor.history.forEach(entry => { %>
+            <tr>
+                <td><%= new Date(entry.timestamp).toLocaleString() %></td>
+                <% if (sensorType === 'Fire' || sensorType === 'Motion') { %>
+                <td><%= entry.status ? "Yes" : "No" %></td>
+                <% } else if (sensorType === 'DHT22') { %>
+                <td><%= entry.temperature %></td>
+                <td><%= entry.humidity %></td>
+                <% } else if (sensorType === 'Gas') { %>
+                <td><%= entry.gasLevel %> %</td>
+                <!-- Sử dụng ppm cho mức độ khí gas -->
+                <% } %>
+                <td><%= device.name %></td>
+                <td><%= device.location %></td>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>
+
+<!-- Liên kết DataTable CSS và JS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" />
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#sensorHistoryTable').DataTable();
+    });
+</script>
+
+<style>
+    .dashboard-container {
+        width: 85%;
+        margin: 30px auto;
+        padding: 30px;
+        background-color: #f9f9f9;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        border: 1px solid #e0e0e0;
+    }
+
+    .page-title {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: transparent;
+        background: linear-gradient(90deg, rgba(0, 120, 255, 1) 0%, rgba(0, 220, 255, 1) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        margin-bottom: 20px;
+        margin-top: 0;
+    }
+
+    #sensorHistoryTable {
+        width: 100%;
+        margin-top: 20px;
+    }
+</style>

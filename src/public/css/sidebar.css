@@ -1,0 +1,146 @@
+/* CSS cho Sidebar */
+* {
+    box-sizing: border-box;
+}
+
+.sidebar-section {
+    background-color: #f8f9fa;
+    padding: 20px;
+    width: 250px;
+    height: calc(100vh - 60px); /* Chiều cao tính toán để không bị header đè lên */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 86px; /* Đặt đúng dưới header */
+    left: 0;
+    transition: width 0.3s ease, left 0.3s ease; /* Hiệu ứng khi mở/đóng sidebar */
+    overflow: hidden; /* Đảm bảo không có phần nội dung nào bị tràn ra ngoài */
+}
+
+/* Thu gọn sidebar, chỉ hiển thị icon */
+.sidebar-hidden {
+    padding: 0;
+    width: 60px; /* Giữ lại khoảng trống chỉ chứa icon */
+}
+
+/* Ẩn text của sidebar khi bị thu gọn */
+.sidebar-hidden .menu-text,
+.sidebar-hidden .sidebar-info-text {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease 0.1s, visibility 0s linear 0.3s; /* Chờ sidebar thu gọn trước khi ẩn chữ */
+}
+
+/* Hiện chữ khi sidebar mở rộng */
+.sidebar-section:not(.sidebar-hidden) .menu-text,
+.sidebar-section:not(.sidebar-hidden) .sidebar-info-text {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0s linear 0s; /* Hiện chữ mượt mà ngay sau khi mở sidebar */
+}
+
+/* Icon điều khiển */
+.info-icon {
+    text-align: end;
+    cursor: pointer;
+    font-size: 24px;
+    position: fixed;
+    top: 130px;
+    left: 208px; /* Cách mép 1 chút khi sidebar mở */
+    z-index: 101; /* Đảm bảo icon luôn hiện trên nội dung */
+    transition: left 0.3s ease; /* Hiệu ứng khi di chuyển icon */
+}
+
+/* Khi sidebar bị ẩn, đảm bảo icon vẫn còn ở bên ngoài */
+.sidebar-hidden ~ .info-icon {
+    left: 16px;
+    top: 118px;
+}
+
+/* Nội dung tiêu đề */
+.sidebar-section h2 {
+    display: block;
+    font-size: 1.5em;
+    color: #333; /* Màu chữ đậm */
+    margin-bottom: 1em;
+    border-bottom: 2px solid #007bff; /* Đường kẻ bên dưới tiêu đề */
+    padding-bottom: 0.5em;
+    padding-right: 40px;
+}
+
+/* Danh sách các mục sidebar */
+.sidebar-section ul {
+    list-style-type: none; /* Bỏ dấu gạch đầu dòng */
+    padding: 0;
+}
+
+.sidebar-section ul li {
+    margin-bottom: 1em; /* Khoảng cách giữa các mục */
+}
+
+/* CSS cho các link */
+.sidebar-section ul li a {
+    text-decoration: none; /* Bỏ gạch chân */
+    color: #007bff; /* Màu xanh cho các liên kết */
+    font-size: 1.1em;
+    display: flex; /* Hiển thị theo hàng ngang để icon và text nằm cạnh nhau */
+    align-items: center; /* Căn giữa icon và text */
+    height: 50px;
+    margin-left: 10px;
+    padding-left: 10px;
+    margin: 16px 10px;
+    border-radius: 5px; /* Bo góc nhẹ cho liên kết */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Hiệu ứng chuyển màu mượt mà hơn */
+}
+
+/* Khoảng cách giữa icon và text */
+.sidebar-section ul li a i {
+    margin-right: 10px;
+}
+
+/* Khi hover, hiệu ứng màu nền và màu chữ */
+.sidebar-section ul li a:hover {
+    background-color: #4872e2; /* Màu nền khi hover */
+    color: #fff; /* Màu chữ khi hover */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Hiệu ứng chuyển màu mượt */
+}
+
+/* Khi sidebar thu gọn, ẩn phần text trong các mục nhưng giữ lại icon */
+.sidebar-hidden ul li a span {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease 0.1s, visibility 0s linear 0.3s; /* Chờ sidebar thu gọn rồi mới ẩn chữ */
+}
+
+/* Khi mở rộng, hiện phần chữ trong các mục */
+.sidebar-section:not(.sidebar-hidden) ul li a span {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0s linear 0s; /* Hiện chữ mượt mà ngay khi sidebar mở rộng */
+}
+
+/* Điều chỉnh phần container để không dính sát vào tường */
+.container {
+    display: flex;
+    margin-left: 250px; /* Đảm bảo main-content không đè lên sidebar */
+    padding-top: 86px; /* Thêm khoảng cách trên để tránh đè lên header */
+    transition: margin-left 0.3s ease;
+}
+
+/* Khi sidebar ẩn, main-content vẫn có một khoảng cách */
+.sidebar-container-hidden {
+    margin-left: 60px; /* Vẫn giữ khoảng cách khi sidebar bị ẩn */
+}
+
+.sidebar-info-text {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+    color: transparent;
+    background: linear-gradient(90deg, rgba(0, 120, 255, 1) 0%, rgba(0, 220, 255, 1) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    margin-bottom: 20px;
+}
+.info-icon {
+    color: #007bff;
+}

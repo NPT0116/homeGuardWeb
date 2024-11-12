@@ -1,0 +1,24 @@
+<div class="profile-card">
+    <h2>User Profile</h2>
+    <ul class="profile-info">
+        <li>
+            <strong>Username:</strong>
+            <span id="profile-username"><%= user.username %></span>
+        </li>
+        <li>
+            <strong>Email:</strong>
+            <span id="profile-email"><%= user.email %></span>
+        </li>
+        <li>
+            <strong>Account Created At:</strong>
+            <span id="profile-created-at">
+                <%= new Date(user.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day:
+                'numeric' }) %>
+            </span>
+        </li>
+        <li>
+            <strong>Number of devices:</strong>
+            <span id="profile-created-at"> <%= deviceCount %> </span>
+        </li>
+    </ul>
+</div>

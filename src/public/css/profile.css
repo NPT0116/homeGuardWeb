@@ -1,0 +1,78 @@
+/* Tổng thể thẻ profile */
+.profile-card {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: left;
+}
+
+/* Tăng hiệu ứng khi hover */
+.profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Tiêu đề của profile card */
+.profile-card h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+/* Thông tin profile */
+.profile-info {
+    list-style: none;
+    padding: 0;
+    font-size: 16px;
+}
+
+.profile-info li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+/* Chữ đậm cho tên trường */
+.profile-info strong {
+    color: #007bff;
+    font-weight: 600;
+}
+
+/* Phần thông tin người dùng */
+.profile-info span {
+    color: #333;
+    font-weight: 500;
+}
+
+/* Căn giữa toàn bộ card */
+/* Tiêu đề của profile card - tạo kiểu đẹp hơn */
+/* Tiêu đề của profile card - căn giữa chỉ chữ "User Profile" */
+.profile-card h2 {
+    font-size: 28px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #007bff, #00bfff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center; /* Căn giữa chữ */
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-shadow: 2px 4px 5px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+/* Hiệu ứng trang trí dưới tiêu đề */
+.profile-card h2::after {
+    content: '';
+    width: 50%; /* Giới hạn độ rộng của gạch dưới */
+    height: 3px;
+    background-color: #00bfff;
+    display: block;
+    margin: 8px auto 0; /* Căn giữa gạch dưới */
+    border-radius: 50px;
+}

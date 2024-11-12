@@ -1,0 +1,33 @@
+.container {
+    display: flex;
+}
+html,
+body {
+    min-height: 100vh; /* Đảm bảo chiều cao tối thiểu của body là toàn bộ chiều cao của viewport */
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(#efe9f4, #dee4f9);
+    background-attachment: fixed; /* Giữ cố định gradient khi cuộn */
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    min-height: 100vh; /* Đảm bảo chiều cao tối thiểu của container là toàn bộ chiều cao của viewport */
+    display: flex;
+
+    padding: 20px;
+}
+
+.sidebar {
+    width: 25%;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+.main-content {
+    width: 100%;
+    padding: 20px;
+}
+.container {
+    height: 100%;
+}

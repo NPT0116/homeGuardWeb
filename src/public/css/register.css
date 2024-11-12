@@ -1,0 +1,177 @@
+/* Tổng thể cho body và tất cả phần tử con */
+*,
+*::before,
+*::after {
+    box-sizing: border-box; /* Áp dụng box-sizing cho tất cả các phần tử */
+}
+
+/* Tổng thể cho body để căn giữa form */
+body {
+    display: flex;
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    min-height: 100vh; /* Đảm bảo chiều cao tối thiểu là 100% chiều cao màn hình */
+    margin: 0;
+    background-color: #e8e8e8; /* Màu nền cho trang */
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 500px;
+    padding: 20px;
+    border-radius: 20px;
+    position: relative;
+    background-color: #1a1a1a;
+    color: #fff;
+    border: 1px solid #333;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Đổ bóng cho form */
+}
+
+.title {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -1px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+    color: #00bfff;
+}
+
+.title::before {
+    width: 18px;
+    height: 18px;
+}
+
+.title::after {
+    width: 18px;
+    height: 18px;
+    animation: pulse 1s linear infinite;
+}
+
+.title::before,
+.title::after {
+    position: absolute;
+    content: '';
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    left: 0px;
+    background-color: #00bfff;
+}
+
+.message,
+.signin {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.signin {
+    text-align: center;
+}
+
+.signin a:hover {
+    text-decoration: underline royalblue;
+}
+
+.signin a {
+    color: #00bfff;
+}
+
+.flex {
+    display: flex;
+    width: 100%;
+    gap: 6px;
+}
+
+.form label {
+    position: relative;
+}
+
+.form label .input {
+    background-color: #333;
+    color: #fff;
+    width: 100%;
+    padding: 20px 10px 10px 10px; /* Điều chỉnh padding để tránh tràn */
+    outline: 0;
+    border: 1px solid rgba(105, 105, 105, 0.397);
+    border-radius: 10px;
+}
+
+.form label .input + span {
+    color: rgba(255, 255, 255, 0.5);
+    position: absolute;
+    left: 10px;
+    top: 14px;
+    font-size: 20px;
+    cursor: text;
+    transition: 0.3s ease;
+}
+
+.form label .input:placeholder-shown + span {
+    top: 12.5px;
+    font-size: 20px;
+}
+
+.form label .input:focus + span,
+.form label .input:valid + span {
+    color: #00bfff;
+    top: 0px;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.input {
+    font-size: large;
+}
+
+.submit {
+    border: none;
+    outline: none;
+    padding: 10px;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 20px;
+    transform: 0.3s ease;
+    background-color: #00bfff;
+}
+
+.submit:hover {
+    background-color: #00bfff96;
+}
+
+@keyframes pulse {
+    from {
+        transform: scale(0.9);
+        opacity: 1;
+    }
+
+    to {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+input:-webkit-autofill:target,
+input:-webkit-autofill:focus-visible,
+input:-webkit-autofill:focus-within {
+    -webkit-animation-delay: 1s; /* Safari support - any positive time runs instantly */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: #fff !important; /* Giữ màu trắng cho text */
+    transition: background-color 5000s ease-in-out 0s, -webkit-text-fill-color 0s !important; /* Giữ lại màu chữ ngay lập tức */
+    box-shadow: inset 0 0 0px 1000px #333 !important; /* Đổ bóng nền đen */
+}
+/* Ghi đè cho autofill trong Chrome, Edge, Safari */
+input:-webkit-autofill {
+    -webkit-text-fill-color: #fff !important;
+}
+input:-internal-autofill-selected {
+    background-color: transparent !important;
+    color: #fff !important;
+}
+/* Ghi đè cho autofill nội bộ (thường dành cho Chrome) */

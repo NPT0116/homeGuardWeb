@@ -1,0 +1,74 @@
+[
+    {
+        "id": "8af364f8ba595067",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "095549d55e288f2a",
+        "type": "http in",
+        "z": "8af364f8ba595067",
+        "name": "twoLedStatus",
+        "url": "/twoLedStatus",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 290,
+        "y": 200,
+        "wires": [
+            [
+                "f9eb60dd108d435d",
+                "28100abe3d76197b",
+                "f70494aed1a73da8"
+            ]
+        ]
+    },
+    {
+        "id": "f9eb60dd108d435d",
+        "type": "debug",
+        "z": "8af364f8ba595067",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 480,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "28100abe3d76197b",
+        "type": "http response",
+        "z": "8af364f8ba595067",
+        "name": "response",
+        "statusCode": "200",
+        "headers": {},
+        "x": 460,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "f70494aed1a73da8",
+        "type": "websocket out",
+        "z": "8af364f8ba595067",
+        "name": "",
+        "server": "f4c5a797804ee6b9",
+        "client": "",
+        "x": 390,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "f4c5a797804ee6b9",
+        "type": "websocket-listener",
+        "path": "/ws/led-status",
+        "wholemsg": "false"
+    }
+]

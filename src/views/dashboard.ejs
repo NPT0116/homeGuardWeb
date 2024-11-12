@@ -1,0 +1,159 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+<% if (devices && devices.length > 0) { %>
+<div class="all-devices">
+    <% devices.forEach(function(device) { %>
+    <div class="device-sensor-list">
+        <h2 class="device-sensor-title">Sensors for <%= device.name %></h2>
+        <div class="sensor-grid">
+            <!-- DHT22 Sensor (Temperature & Humidity) -->
+            <% if (device.dht22Sensor) { %>
+            <div class="sensor-card" onclick="window.location.href='/dashboard/<%= device.dht22Sensor._id %>'">
+                <div class="sensor-icon"><i class="fas fa-thermometer-half"></i></div>
+                <div class="sensor-value"><strong>Temperature:</strong> <%= device.dht22Sensor.temperature %> °C</div>
+                <div class="sensor-value"><strong>Humidity:</strong> <%= device.dht22Sensor.humidity %> %</div>
+                <div class="last-modified">
+                    Last Modified: <%= device.dht22Sensor.history.length > 0 ? new
+                    Date(device.dht22Sensor.history[device.dht22Sensor.history.length - 1].timestamp).toLocaleString() :
+                    "No Data" %>
+                </div>
+            </div>
+            <% } %>
+
+            <!-- Fire Sensor -->
+            <% if (device.fireSensor) { %>
+            <div class="sensor-card" onclick="window.location.href='/dashboard/<%= device.fireSensor._id %>'">
+                <div class="sensor-icon"><i class="fas fa-fire"></i></div>
+                <div class="sensor-value">
+                    <strong>Fire Detected:</strong> <%= device.fireSensor.status ? "Yes" : "No" %>
+                </div>
+                <div class="last-modified">
+                    <strong>Last Modified:</strong>
+                    <%= device.fireSensor.history.length > 0 ? new
+                    Date(device.fireSensor.history[device.fireSensor.history.length - 1].timestamp).toLocaleString() :
+                    "No Data" %>
+                </div>
+            </div>
+            <% } %>
+
+            <!-- Motion Sensor -->
+            <% if (device.motionSensor) { %>
+            <div class="sensor-card" onclick="window.location.href='/dashboard/<%= device.motionSensor._id %>'">
+                <div class="sensor-icon"><i class="fas fa-running"></i></div>
+                <div class="sensor-value">
+                    <strong>Motion Detected:</strong> <%= device.motionSensor.isMotionDetected ? "Yes" : "No" %>
+                </div>
+                <div class="last-modified">
+                    <strong>Last Modified:</strong>
+                    <%= device.motionSensor.history.length > 0 ? new
+                    Date(device.motionSensor.history[device.motionSensor.history.length - 1].timestamp).toLocaleString()
+                    : "No Data" %>
+                </div>
+            </div>
+            <% } %>
+
+            <!-- Distance Sensor -->
+            <% if (device.gasSensor) { %>
+            <div class="sensor-card" onclick="window.location.href='/dashboard/<%= device.gasSensor._id %>'">
+                <div class="sensor-icon"><i class="fas fa-running"></i></div>
+                <div class="sensor-value"><strong>Gas Level:</strong> <%= device.gasSensor.gasLevel %></div>
+                <div class="last-modified">
+                    <strong>Last Modified:</strong>
+                    <%= device.gasSensor.history.length > 0 ? new
+                    Date(device.gasSensor.history[device.gasSensor.history.length - 1].timestamp).toLocaleString() : "No
+                    Data" %>
+                </div>
+            </div>
+            <% } %>
+        </div>
+    </div>
+    <% }) %>
+</div>
+<% } else { %>
+<p>No devices found for this user.</p>
+<% } %>
+
+<style>
+    .all-devices {
+        margin: 20px auto;
+        max-width: 1000px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .device-sensor-list {
+        margin: 20px auto;
+        max-width: 800px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .device-sensor-title {
+        font-size: 1.8rem;
+        font-weight: bold;
+        text-align: center;
+        color: transparent;
+        background: linear-gradient(90deg, rgba(0, 120, 255, 1) 0%, rgba(0, 220, 255, 1) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        margin-bottom: 20px;
+    }
+
+    .sensor-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .sensor-card {
+        position: relative;
+        height: 160px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        background-color: #e7f0ff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .sensor-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+    }
+
+    .sensor-icon {
+        font-size: 30px;
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+
+    .sensor-value {
+        font-size: 24px;
+        color: #e74c3c;
+        font-weight: bold;
+        margin: 5px 0;
+    }
+
+    .sensor-type {
+        font-size: 18px;
+        color: #0056b3;
+    }
+    .last-modified {
+        position: absolute;
+        top: 138px;
+        left: 4px;
+        font-size: 12px;
+        color: #6f6f6f;
+        background-color: #f4f4f4;
+        padding: 3px 8px;
+        border-radius: 12px;
+        box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+    }
+</style>

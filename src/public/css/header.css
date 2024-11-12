@@ -1,0 +1,86 @@
+body {
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    margin: 0;
+    background-color: #f5f5f5; /* Màu nền sáng để tạo sự tương phản */
+}
+
+a {
+    text-decoration: none;
+    color: #333; /* Màu chữ tối hơn để dễ đọc */
+    transition: color 0.3s ease; /* Hiệu ứng chuyển màu khi hover */
+}
+
+a:hover {
+    color: #007bff; /* Màu chuyển khi hover */
+}
+
+.site-header {
+    background: rgb(67, 107, 235);
+    background: radial-gradient(
+        circle,
+        rgba(67, 107, 235, 1) 26%,
+        rgba(81, 146, 227, 1) 53%,
+        rgba(72, 114, 226, 1) 81%
+    );
+    border-bottom: 1px solid #e0e0e0; /* Đường viền dưới */
+    padding: 1.5em 2em; /* Padding để tạo khoảng cách thoải mái */
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Canh giữa các phần tử dọc */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ cho header */
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.site-identity h1 {
+    font-size: 2em; /* Tăng kích thước tiêu đề */
+    margin: 0;
+    color: #fff; /* Màu chữ trắng cho tiêu đề */
+    font-weight: bold;
+    letter-spacing: 1px; /* Khoảng cách giữa các chữ */
+    transition: transform 0.3s, color 0.3s; /* Hiệu ứng khi hover */
+}
+
+.site-identity h1 a {
+    color: #fff; /* Màu chữ trắng cho liên kết trong tiêu đề */
+}
+
+.site-identity h1:hover {
+    transform: scale(1.1); /* Phóng to tiêu đề khi hover */
+    color: #f1f1f1; /* Màu sáng hơn khi hover */
+}
+
+.site-navigation ul {
+    list-style: none; /* Bỏ dấu gạch đầu dòng */
+    display: flex; /* Hiển thị dưới dạng flexbox */
+    margin: 0;
+    margin-right: 80px;
+}
+
+.site-navigation li {
+    margin: 0 1.5em; /* Khoảng cách giữa các mục menu */
+    position: relative; /* Vị trí tương đối để dùng cho hiệu ứng con trỏ */
+}
+
+.site-navigation li a {
+    padding: 0.8em 1.5em; /* Padding cho các liên kết */
+    border-radius: 50px; /* Bo tròn góc nhiều hơn */
+    color: #fff; /* Màu chữ trắng */
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Hiệu ứng chuyển màu nền khi hover */
+}
+
+.site-navigation li a:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Màu nền chuyển khi hover */
+    color: #fff; /* Màu chữ trắng khi hover */
+    transform: translateY(-3px); /* Di chuyển nhẹ khi hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Bóng đổ khi hover */
+}
+
+.nav a.active {
+    background-color: rgba(255, 255, 255, 0.3); /* Màu nền cho menu active */
+    color: #fff; /* Màu chữ trắng */
+    font-weight: bold;
+}

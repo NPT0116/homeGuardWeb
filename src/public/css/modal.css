@@ -1,0 +1,96 @@
+/* Modal chung */
+.modal {
+    display: none; /* Ẩn modal mặc định */
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Nền mờ */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Nội dung modal */
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* Đổ bóng mềm */
+    max-width: 400px;
+    width: 100%; /* Đảm bảo modal không quá to */
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Hiệu ứng vào modal */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Căn chỉnh văn bản và margin */
+/* CSS cho dòng thông báo trong modal */
+.modal-content p {
+    margin-bottom: 20px;
+    font-size: 22px; /* Tăng kích thước chữ */
+    font-weight: 600; /* Tăng độ đậm của chữ */
+    color: #333; /* Màu chữ tối để dễ đọc */
+    text-align: center; /* Căn giữa văn bản */
+    letter-spacing: 0.5px; /* Tạo khoảng cách giữa các chữ */
+    line-height: 1.5; /* Tăng khoảng cách giữa các dòng */
+    padding: 10px;
+    background: linear-gradient(
+        to right,
+        rgba(67, 107, 235, 1) 0%,
+        rgba(72, 114, 226, 1) 100%
+    ); /* Hiệu ứng màu gradient */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; /* Chỉ giữ lại phần chữ với màu gradient */
+}
+
+/* Nút */
+.modal-content button {
+    padding: 12px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Đổ bóng cho nút */
+}
+
+/* Nút Confirm */
+#modal-confirm-btn {
+    background-color: rgba(255, 77, 77, 0.8);
+    color: white;
+}
+
+#modal-confirm-btn:hover {
+    background-color: rgba(255, 77, 77, 1);
+    box-shadow: 0 6px 12px rgba(255, 77, 77, 0.4); /* Hiệu ứng bóng khi hover */
+}
+
+/* Nút Cancel */
+#modal-cancel-btn {
+    background-color: rgba(81, 146, 227, 0.8); /* Sử dụng màu xanh của header */
+    color: white;
+}
+
+#modal-cancel-btn:hover {
+    background-color: rgba(81, 146, 227, 1); /* Màu khi hover */
+    box-shadow: 0 6px 12px rgba(81, 146, 227, 0.4); /* Hiệu ứng bóng khi hover */
+}
+
+/* Thêm khoảng cách giữa hai nút */
+.modal-content button + button {
+    margin-left: 10px;
+}

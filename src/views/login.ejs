@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title><%= title %></title>
+        <link href="/css/register.css" rel="stylesheet" />
+        <!-- Sử dụng chung CSS với trang register -->
+    </head>
+    <body>
+        <form class="form" action="/login" method="POST">
+            <p class="title">Login</p>
+            <p class="message">Access your account and protect your home.</p>
+
+            <!-- Trường Username -->
+            <label>
+                <input class="input-field input" type="text" name="username" required autocomplete="on" />
+                <span>Username</span>
+            </label>
+            <% if (errors.username) { %>
+            <div style="color: red" class="error-message username-error"><%= errors.username %></div>
+            <% } %>
+
+            <!-- Trường Password -->
+            <label>
+                <input class="input-field input" type="password" name="password" required />
+                <span>Password</span>
+            </label>
+            <% if (errors.password) { %>
+            <div style="color: red" class="error-message password-error"><%= errors.password %></div>
+            <% } %>
+
+            <!-- Nút Submit -->
+            <button class="submit">Login</button>
+
+            <!-- Liên kết tới trang đăng ký -->
+            <p class="signin">Don't have an account? <a href="/register">Register</a></p>
+        </form>
+    </body>
+</html>
