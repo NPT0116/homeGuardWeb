@@ -7,7 +7,7 @@ import { comparePasswordd } from '../utils/password.mjs';
 passport.serializeUser((user, done) => {
     console.log('Serialize User');
 
-    done(null, user.id);
+    done(null, user._id);
 });
 passport.deserializeUser(async (userId, done) => {
     console.log('Deserialize User');

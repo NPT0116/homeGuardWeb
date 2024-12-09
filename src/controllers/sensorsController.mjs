@@ -7,6 +7,8 @@ import { FireSensor } from '../models/fireSensorSchema.mjs';
 import { MotionSensor } from '../models/motionSensorSchema.mjs';
 import { GasSensor } from '../models/gasSensorSchema.mjs';
 import sendEmail from '../utils/emailUtil.mjs';
+import utilSendPhoneNotification from '../utils/sendPhoneNotification.mjs';
+
 export const renderSensorPageWith1Sensor = async (req, res, next) => {
     const deviceId = req.session.selectedDeviceId; // Retrieve from session
     if (!deviceId) {
@@ -39,6 +41,7 @@ export const renderSensorPageWithAllSensor = async (req, res, next) => {
         next(error);
     }
 };
+
 const getSensorModel = (sensorType) => {
     switch (sensorType) {
         case 'dht22':
@@ -140,8 +143,7 @@ export const updateSensorData = async (req, res, next) => {
 const alertConfigurations = {
     fire: {
         emailSubject: 'Cảnh báo cháy nổ tức thời',
-        getEmailContent: (location, details) =>
-            `Cảnh báo: Đã phát hiện dấu hiệu cháy tại ${location}. Nhiệt độ: ${details.temperature}°C, Mức độ khói: ${details.smokeLevel}. Hãy kiểm tra ngay lập tức.`,
+        getEmailContent: (location, details) => `Cảnh báo: Đã phát hiện dấu hiệu cháy tại ${location}. Nhiệt độ: ${details.temperature}°C, Mức độ khói: ${details.smokeLevel}. Hãy kiểm tra ngay lập tức.`,
         getSocketEvent: () => 'fireAlert',
     },
     gas: {
@@ -170,6 +172,9 @@ export const sendAlert = async (alertType, location, userEmail, alertDetails, io
 
     // Gửi email
     await sendEmail(userEmail, emailSubject, emailContent);
+
+    // Gửi thông báo điện thoại
+    await utilSendPhoneNotification(emailSubject, emailContent);
 
     // Gửi thông báo qua Socket.IO
     io.emit(socketEvent, {

@@ -1,17 +1,17 @@
 <div class="dashboard-container">
     <h2 class="page-title"><%= sensorType %> Sensor Dashboard</h2>
 
-    <!-- Bảng hiển thị lịch sử cho cảm biến Gas -->
+    <!-- Biểu đồ hiển thị lịch sử cho cảm biến DHT22 -->
     <h3><%= sensorType %> Detection History</h3>
+    <% if (sensorType === 'DHT22') { %>
+    <canvas id="dht22Chart" width="400" height="200"></canvas>
+    <% } else { %>
     <table id="sensorHistoryTable" class="display">
         <thead>
             <tr>
                 <th>Timestamp</th>
                 <% if (sensorType === 'Fire' || sensorType === 'Motion') { %>
                 <th>Status</th>
-                <% } else if (sensorType === 'DHT22') { %>
-                <th>Temperature (°C)</th>
-                <th>Humidity (%)</th>
                 <% } else if (sensorType === 'Gas') { %>
                 <th>Gas Level</th>
                 <% } %>
@@ -25,12 +25,8 @@
                 <td><%= new Date(entry.timestamp).toLocaleString() %></td>
                 <% if (sensorType === 'Fire' || sensorType === 'Motion') { %>
                 <td><%= entry.status ? "Yes" : "No" %></td>
-                <% } else if (sensorType === 'DHT22') { %>
-                <td><%= entry.temperature %></td>
-                <td><%= entry.humidity %></td>
                 <% } else if (sensorType === 'Gas') { %>
                 <td><%= entry.gasLevel %> %</td>
-                <!-- Sử dụng ppm cho mức độ khí gas -->
                 <% } %>
                 <td><%= device.name %></td>
                 <td><%= device.location %></td>
@@ -38,17 +34,77 @@
             <% }) %>
         </tbody>
     </table>
+    <% } %>
 </div>
 
-<!-- Liên kết DataTable CSS và JS -->
+<!-- Liên kết Chart.js và chartjs-adapter-date-fns -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" />
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-
 <script>
     $(document).ready(function () {
         $('#sensorHistoryTable').DataTable();
     });
+</script>
+<script>
+    <% if (sensorType === 'DHT22') { %>
+    // Lấy dữ liệu từ server
+    const sensorData = <%- JSON.stringify(sensor.history) %>;
+
+    // Kiểm tra dữ liệu
+    // Chuẩn bị dữ liệu cho biểu đồ
+    const labels = sensorData.map(entry => new Date(entry.timestamp));
+    const temperatureData = sensorData.map(entry => entry.temperature);
+    const humidityData = sensorData.map(entry => entry.humidity);
+
+    // Tạo biểu đồ
+    const ctx = document.getElementById('dht22Chart').getContext('2d');
+    const dht22Chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Temperature (°C)',
+                    data: temperatureData,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    fill: false,
+                },
+                {
+                    label: 'Humidity (%)',
+                    data: humidityData,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    fill: false,
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: 'minute'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Timestamp'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Value'
+                    }
+                }
+            }
+        }
+    });
+    <% } %>
 </script>
 
 <style>

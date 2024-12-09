@@ -9,11 +9,7 @@ import { GasSensor } from '../models/gasSensorSchema.mjs';
 export const renderDashboard = async (req, res, next) => {
     try {
         const userId = req.user._id;
-        const devices = await Device.find({ owner: userId })
-            .populate('dht22Sensor')
-            .populate('fireSensor')
-            .populate('motionSensor')
-            .populate('gasSensor');
+        const devices = await Device.find({ owner: userId }).populate('dht22Sensor').populate('fireSensor').populate('motionSensor').populate('gasSensor');
 
         if (!devices.length) {
             return res.status(404).send('No devices found for this user');
@@ -30,19 +26,19 @@ export const redirectToDashboardSensors = async (req, res, next) => {
 
     try {
         // Tìm cảm biến trong các loại cảm biến khác nhau
-        let sensor = await DHT22Sensor.findById(sensorId);
+        let sensor = await DHT22Sensor.findById(sensorId).populate('device');
         let sensorType = 'DHT22';
 
         if (!sensor) {
-            sensor = await FireSensor.findById(sensorId);
+            sensor = await FireSensor.findById(sensorId).populate('device');
             sensorType = 'Fire';
         }
         if (!sensor) {
-            sensor = await MotionSensor.findById(sensorId);
+            sensor = await MotionSensor.findById(sensorId).populate('device');
             sensorType = 'Motion';
         }
         if (!sensor) {
-            sensor = await GasSensor.findById(sensorId);
+            sensor = await GasSensor.findById(sensorId).populate('device');
             sensorType = 'Gas';
         }
 
@@ -50,6 +46,12 @@ export const redirectToDashboardSensors = async (req, res, next) => {
             return next(new customError('Sensor not found', 404));
         }
 
+        // res.json({
+        //     title: `${sensorType} Sensor Dashboard`,
+        //     device: sensor.device,
+        //     sensorType,
+        //     sensor,
+        // });
         return res.render('sensorDashboard', {
             title: `${sensorType} Sensor Dashboard`,
             device: sensor.device,
