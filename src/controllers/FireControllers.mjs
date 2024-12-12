@@ -4,7 +4,7 @@ import sendEmail from '../utils/emailUtil.mjs';
 
 export const fireDetection = async (req, res, next) => {
     try {
-        const { deviceId, temperature, smokeLevel, status } = req.body;
+        const { deviceId, status } = req.body;
 
         // Tìm thiết bị theo deviceId và lấy thông tin cảm biến lửa
         const device = await Device.findOne({ device_id: deviceId }).populate('fireSensor').populate('owner');
@@ -18,15 +18,11 @@ export const fireDetection = async (req, res, next) => {
         // Xác định trạng thái cháy dựa trên ngưỡng nhiệt độ và khói
 
         // Cập nhật giá trị và trạng thái cảm biến lửa
-        fireSensor.temperature = temperature;
-        fireSensor.smokeLevel = smokeLevel;
         fireSensor.status = status;
 
         // Thêm thông tin vào lịch sử của fireSensor
         fireSensor.history.push({
             timestamp: new Date(),
-            temperature,
-            smokeLevel,
             status,
         });
 

@@ -89,15 +89,12 @@ export const updateSensorData = async (req, res, next) => {
             sensor.humidity = humidity;
             sensor.history.push({ timestamp, temperature, humidity });
         } else if (sensorType === 'fire') {
-            const { temperature, smokeLevel, status } = sensorData;
-            sensor.temperature = temperature;
-            sensor.smokeLevel = smokeLevel;
+            const { status } = sensorData;
             sensor.status = status;
-            sensor.history.push({ timestamp, temperature, smokeLevel, status });
+            sensor.history.push({ timestamp, status });
 
             if (status) {
                 alertTriggered = true;
-                alertDetails = { temperature, smokeLevel };
             }
         } else if (sensorType === 'motion') {
             const { isMotionDetected } = sensorData;
@@ -143,7 +140,7 @@ export const updateSensorData = async (req, res, next) => {
 const alertConfigurations = {
     fire: {
         emailSubject: 'Cảnh báo cháy nổ tức thời',
-        getEmailContent: (location, details) => `Cảnh báo: Đã phát hiện dấu hiệu cháy tại ${location}. Nhiệt độ: ${details.temperature}°C, Mức độ khói: ${details.smokeLevel}. Hãy kiểm tra ngay lập tức.`,
+        getEmailContent: (location, details) => `Cảnh báo: Đã phát hiện dấu hiệu cháy tại ${location}. Hãy kiểm tra ngay lập tức.`,
         getSocketEvent: () => 'fireAlert',
     },
     gas: {
@@ -174,7 +171,7 @@ export const sendAlert = async (alertType, location, userEmail, alertDetails, io
     await sendEmail(userEmail, emailSubject, emailContent);
 
     // Gửi thông báo điện thoại
-    await utilSendPhoneNotification(emailSubject, emailContent);
+    // await utilSendPhoneNotification(emailSubject, emailContent);
 
     // Gửi thông báo qua Socket.IO
     io.emit(socketEvent, {
