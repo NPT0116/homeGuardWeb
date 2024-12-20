@@ -5,7 +5,7 @@ import { FireSensor } from '../models/fireSensorSchema.mjs';
 import { MotionSensor } from '../models/motionSensorSchema.mjs';
 import customError from '../utils/customError.mjs';
 import { GasSensor } from '../models/gasSensorSchema.mjs';
-
+import moment from 'moment-timezone';
 export const renderDashboard = async (req, res, next) => {
     try {
         const userId = req.user._id;
@@ -52,6 +52,10 @@ export const redirectToDashboardSensors = async (req, res, next) => {
         //     sensorType,
         //     sensor,
         // });
+        sensor.history = sensor.history.map((entry) => ({
+            ...entry,
+            timestamp: moment(entry.timestamp).tz('Asia/Bangkok').format(),
+        }));
         return res.render('sensorDashboard', {
             title: `${sensorType} Sensor Dashboard`,
             device: sensor.device,

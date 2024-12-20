@@ -100,7 +100,6 @@ export const deleteDevice = async (req, res, next) => {
         await DHT22Sensor.deleteOne({ _id: device.dht22Sensor });
         await FireSensor.deleteOne({ _id: device.fireSensor });
         await MotionSensor.deleteOne({ _id: device.motionSensor });
-        await DistanceSensor.deleteOne({ _id: device.distanceSensor });
 
         // Xóa thiết bị khỏi danh sách `devices` của người dùng
         await User.updateOne({ _id: req.user._id }, { $pull: { devices: device._id } });
